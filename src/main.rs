@@ -45,10 +45,39 @@ fn main() {
 			// Ball
 			ellipse([0.9, 0.9, 0.9, 1.0], [ball.x, ball.y, 40.0, 40.0], c.transform, g);
 		});
+
+		println!("had: {:?}", e.press_args());
+
+		if let Some(Button::Keyboard(key)) = e.press_args() {
+			if key == Key::W {
+				println!("Pressed keyboard key '{:?}'", key);
+			}
+		}
+
+		//let b = Input::Button(ButtonArgs{
+		//	state: ButtonState::Press,
+		//	button: Button::Keyboard(Key::W), // key
+		//	scancode: Some(11),
+		//});
+
+		//let b = Input::Text(String::from("W"));
+		//let mut evt = Event::Input(b, Some(0));
+		// let mut evt = Event::Input(Input::Text(String::from("W")), Some(0));
+
+		//let a = ButtonEvent::button(&evt, keyPressed);
+		//let mut a = ButtonEvent::button_args(&evt);
+		//if (!a.is_none()) {
+		//	print!("aasdasd");
+		//	print!("{}", a.unwrap().scancode.unwrap());
+		//}
 		
 		ball.x += ball.c * ball.speed;
 		ball.y += ball.s * ball.speed;
 	}
+}
+
+fn keyPressed(args: ButtonArgs) {
+	print!("Key state: {}", args.state == ButtonState::Release);
 }
 
 // https://crates.io/crates/piston
