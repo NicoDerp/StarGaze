@@ -1,17 +1,25 @@
-# Hello
+# Two player Pong! in Rust
 
 ## Key Features
 
-No features.
+- Two player
+- Awesome graphics
+- Cool ball
 
 ## How To Use
 
-No use so far.
+Install Rust compiler if you don't have it.
+
+git clone {this_link}
+
+cd into the star-gaze directory
+
+cargo run
 
 ## Credits
 
 This software uses the following open source packages:
-None
+piston
 
 ## Support
 
