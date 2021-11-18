@@ -17,8 +17,9 @@ struct Player {
 }
 
 fn main() {
-	let window_x = 640;
-	let window_y = 480;
+	// 640, 480
+	let window_x = 1300;
+	let window_y = 800;
 	
 	let pi = 3.14;
 	let two_pi = 2.0*pi;
@@ -48,9 +49,9 @@ fn main() {
 		speed: 0.3,
 	};
 
-	let player_speed = 1.0;
-	let player_width = 20.0;
-	let player_height = 50.0;
+	let player_speed = 0.8;
+	let player_width = 10.0;
+	let player_height = 80.0;
 	let player_space = 20.0;
 	
 	ball.c = ball.angle.cos();
@@ -101,16 +102,19 @@ fn main() {
 			println!("Key released: {:?}", k);
 		}
 
-		println!("Player 1: {}", player1.key_move);
-
 		player1.y += player1.key_move * player_speed;
 		player2.y += player2.key_move * player_speed;
 		
+		if player1.y <= 0.0 { player1.y = 0.0; }
+		if player1.y + player_height >= window_y.into() { player1.y = window_y.into(); player1.y -= player_height; }
+		if player2.y <= 0.0 { player2.y = 0.0; }
+		if player2.y + player_height >= window_y.into() { player2.y = window_y.into(); player2.y -= player_height; }
+				
 		ball.x += ball.c * ball.speed;
 		ball.y += ball.s * ball.speed;
 
 		let mut collided = false;
-		println!("ball y: {}", ball.y);
+		// println!("ball y: {}", ball.y);
 
 		// Player 1
 		if (ball.x <= player_space + player_width) {
@@ -145,11 +149,17 @@ fn main() {
 		// Right
 		if ball.x + ball.r >= window_x.into() {
 			println!("Player 1 Won!");
+			ball.speed = 0.5;
+			ball.x = (window_x / 2).into();
+			ball.y = (window_y / 2).into();
 		}
 
 		// Left
 		if ball.x <= 0.0 {
 			println!("Player 2 Won!");
+			ball.speed = 0.5;
+			ball.x = (window_x / 2).into();
+			ball.y = (window_y / 2).into();
 		}
 
 		// Calculate new values
