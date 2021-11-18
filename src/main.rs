@@ -117,7 +117,7 @@ fn main() {
 		// println!("ball y: {}", ball.y);
 
 		// Player 1
-		if (ball.x <= player_space + player_width) {
+		if ball.x <= player_space + player_width {
 			if (player1.y <= ball.y && ball.y <= (player1.y + player_height)) || (player1.y <= (ball.y + ball.r) && (ball.y + ball.r) <= (player1.y + player_height)) {
 				ball.angle = pi - ball.angle;
 				collided = true;
@@ -126,7 +126,7 @@ fn main() {
 		}
 
 		// Player 2
-		if (ball.x >= (window_x as f64) - player_space - player_width - ball.r) {
+		if ball.x >= (window_x as f64) - player_space - player_width - ball.r {
 			if (player2.y <= ball.y && ball.y <= (player2.y + player_height)) || (player2.y <= (ball.y + ball.r) && (ball.y + ball.r) <= (player2.y + player_height)) {
 				ball.angle = pi - ball.angle;
 				collided = true;
