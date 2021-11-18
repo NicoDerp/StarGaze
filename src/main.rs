@@ -14,6 +14,7 @@ struct Ball {
 struct Player {
 	y: f64,
 	key_move: f64,
+	score: u8,
 }
 
 fn main() {
@@ -26,26 +27,29 @@ fn main() {
 
 	let mut window: PistonWindow = WindowSettings::new("Pong!", (window_x, window_y))
 		.exit_on_esc(true)
+		.vsync(true)
 		.build()
 		.unwrap_or_else(|e| { panic!("Failed to build PistonWindow: {}", e) });
 
 	let mut player1 = Player {
 		y: 0.0,
 		key_move: 0.0,
+		score: 0,
 	};
 
 	let mut player2 = Player {
 		y: 0.0,
 		key_move: 0.0,
+		score: 0,
 	};
 	
 	let mut ball = Ball {
-		x: 400.0,
-		y: 100.0,
+		x: (window_x/2).into(),
+		y: (window_y/2).into(),
 		r: 40.0,
 		c: 0.0,
 		s: 0.0,
-		angle: pi*1.2,
+		angle: pi*1.3,
 		speed: 0.3,
 	};
 
@@ -56,6 +60,14 @@ fn main() {
 	
 	ball.c = ball.angle.cos();
 	ball.s = ball.angle.sin();
+
+	let font = include_bytes!("./Fonts/bit5x3.ttf");
+	
+	let mut glyphs = Glyphs::from_bytes(
+		font,
+		window.create_texture_context(),
+		TextureSettings::new(),
+	).unwrap();
 	
 	// print!("{}", angle.sin());
 	while let Some(e) = window.next() {
@@ -70,7 +82,19 @@ fn main() {
 
 			// Ball
 			ellipse([0.9, 0.9, 0.9, 1.0], [ball.x, ball.y, ball.r, ball.r], c.transform, g);
+
+			let transform = c.transform.trans((window_x/2 - 120).into(), 80.0);
+			let _ = text::Text::new_color([0.9, 0.9, 0.9, 1.0], 50).draw(
+				format!("{} | {}", player1.score, player2.score).as_str(),
+				&mut glyphs,
+				&c.draw_state,
+				transform, g
+			);
+			glyphs.factory.encoder.flush(_d);
+			// println!("{:?}", ooga);
 		});
+
+		// println!("{} | {}", player1.score, player2.score);
 
 		if !e.press_args().is_none() {
 			let k = e.press_args().unwrap();
@@ -148,7 +172,7 @@ fn main() {
 
 		// Right
 		if ball.x + ball.r >= window_x.into() {
-			println!("Player 1 Won!");
+			player1.score += 1;
 			ball.speed = 0.5;
 			ball.x = (window_x / 2).into();
 			ball.y = (window_y / 2).into();
@@ -156,7 +180,7 @@ fn main() {
 
 		// Left
 		if ball.x <= 0.0 {
-			println!("Player 2 Won!");
+			player2.score += 1;
 			ball.speed = 0.5;
 			ball.x = (window_x / 2).into();
 			ball.y = (window_y / 2).into();
